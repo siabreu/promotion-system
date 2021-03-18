@@ -13,6 +13,9 @@ class PromotionsController < ApplicationController
 
     def create
         @promotion = Promotion.new(promotion_params)
+
+        puts @promotion.expiration_date
+
         @promotion.save!
         redirect_to @promotion
     end
@@ -22,7 +25,7 @@ class PromotionsController < ApplicationController
         def promotion_params
             params
                 .require(:promotion)
-                .permit(:name, :expiration_date, :description,
+                .permit(:name,  :expiration_date, :description,
                         :discount_rate, :code, :coupon_quantity)
         end
 end
