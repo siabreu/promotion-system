@@ -22,15 +22,42 @@ class PromotionsController < ApplicationController
 
     def generate_coupons
         @promotion = Promotion.find(params[:id])
-        
+
         # gerar cupons
         (1..@promotion.coupon_quantity).each do |number|
             Coupon.create!(code: "#{@promotion.code}-#{'%04d' % number}", promotion: @promotion)
         end
-        
+
         flash[:notice] = 'Cupons gerados com sucesso'
         redirect_to @promotion
     end
+
+    def edit
+        @promotion = Promotion.find(params[:id])
+    end
+
+    def update
+        @promotion = Promotion.find(params[:id])
+
+        if @promotion.update(promotion_params)
+            redirect_to @promotion
+        else
+            render :edit
+        end
+    end
+
+    def destroy
+        @promotion = Promotion.find(params[:id])
+
+        @coupons = Coupon.where(promotion: @promotion.id)
+        @coupons.each do |coupon|
+            coupon.destroy
+        end
+
+        @promotion.destroy
+        redirect_to @promotion
+    end
+
 
     private
 

@@ -144,4 +144,45 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'NATAL10-0100'
     assert_no_text 'NATAL10-0101'
   end
+
+  test 'update promotion' do
+    #Arrange
+    promotion = Promotion.create!(name: 'Namorados', description: 'Promoção dia dos Namorados',
+                                  code: 'NAMORADOS10', discount_rate: 10, 
+                                  coupon_quantity: 60,
+                                  expiration_date: '13/06/2021')
+    #Act
+    visit promotion_path(promotion)
+    click_on 'Editar promoção'
+    fill_in 'Nome', with: 'Namorados'
+    fill_in 'Descrição', with: 'Promoção dia dos Namorados'
+    fill_in 'Código', with: 'NAMORADOS10'
+    fill_in 'Desconto', with: '10'
+    fill_in 'Quantidade de cupons', with: '60'    
+    fill_in 'Data de término', with: '13/06/2021'
+    click_on 'Editar promoção'
+
+    #Assert
+    assert_current_path promotion_path(Promotion.last)
+    assert_text 'Namorados'
+    assert_text 'Promoção dia dos Namorados'
+    assert_text '10,00%'
+    assert_text 'NAMORADOS10'
+    assert_text '13/06/2021'
+    assert_text '60'
+  end
+
+  test 'remove promotion' do
+    promotion = Promotion.create!(name: 'Namorados', description: 'Promoção dia dos Namorados',
+                        code: 'NAMORADOS10', discount_rate: 10, 
+                        coupon_quantity: 2,
+                        expiration_date: '13/06/2021')
+
+    visit promotion_path(promotion)
+
+    click_on 'Excluir promoção'
+
+    assert_current_path promotions_path
+  end
+
 end
