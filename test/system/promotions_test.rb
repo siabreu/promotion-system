@@ -143,7 +143,7 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'NATAL10-0002'
     assert_text 'NATAL10-0100'
     assert_no_text 'NATAL10-0101'
-  end
+    end
 
   test 'update promotion' do
     #Arrange
@@ -181,6 +181,10 @@ class PromotionsTest < ApplicationSystemTestCase
     visit promotion_path(promotion)
 
     click_on 'Excluir promoção'
+
+    # accept_confirm do
+    #   click_on 
+    # end
 
     assert_current_path promotions_path
   end

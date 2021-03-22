@@ -95,6 +95,10 @@ class ProductCategoriesTest < ApplicationSystemTestCase
         visit product_category_path(product_category)
         click_on 'Excluir categoria de produto'
 
+        # accept_confirm do
+        #   click_on 'Ok'
+        # end
+
         assert_current_path product_categories_path
     end
 end
