@@ -121,7 +121,7 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Código', with: 'NATAL10'
     click_on 'Criar promoção'
 
-    assert_text 'deve ser único', count: 2
+    assert_text 'já está em uso', count: 2
   end
 
   test 'generate coupons for a promotion' do
@@ -139,10 +139,11 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'Cupons gerados com sucesso'
     assert_no_link 'Gerar cupons'
     assert_no_text 'NATAL10-0000'
-    assert_text 'NATAL10-0001'
-    assert_text 'NATAL10-0002'
-    assert_text 'NATAL10-0100'
+    assert_text 'NATAL10-0001 (Ativo)'
+    assert_text 'NATAL10-0002 (Ativo)'
+    assert_text 'NATAL10-0100 (Ativo)'
     assert_no_text 'NATAL10-0101'
+    assert_link 'Desabilitar', count: 100
     end
 
   test 'update promotion' do
