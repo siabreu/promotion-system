@@ -11,6 +11,17 @@
   </head>
 
   <body>
+    <nav>
+      <% if user_signed_in? %>
+      <%= link_to 'Sair', '#' %>
+        <%= current_user.email %>
+        <li><%= link_to 'Promoções', promotions_path %></li>
+      <% else %>
+        <%= link_to 'Cadastrar', new_user_registration_path %>
+        <%= link_to 'Entrar', new_user_session_path %>
+      <% end %>      
+    </nav>
+
     <%= flash[:notice] %>
     <%= flash[:alert] %>
     <%= yield %>
