@@ -13,7 +13,7 @@ class Promotion < ApplicationRecord
         end
     end
 
-    # rails notes --para visualizar os todos
+    # rails notes --para visualizar os TODOS
     #TODO: fazer testes para esse método
     def coupons? 
         coupons.any?

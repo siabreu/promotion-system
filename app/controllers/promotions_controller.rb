@@ -1,6 +1,7 @@
 class PromotionsController < ApplicationController
-    before_action :set_promotion, only: [:show, :edit, :update, :destroy, :generate_coupons]
-    
+    before_action :authenticate_user!, only:  %i[index show new edit create generate_coupons]
+    before_action :set_promotion, only: %i[show edit update destroy generate_coupons]
+
     def index
         @promotions = Promotion.all
     end
@@ -23,7 +24,7 @@ class PromotionsController < ApplicationController
 
     def generate_coupons
         @promotion.generate_coupons!
-        redirect_to @promotion, notice: 'Cupons gerados com sucesso'
+        redirect_to @promotion, notice: t('.success')
     end
 
     def edit
@@ -60,4 +61,6 @@ class PromotionsController < ApplicationController
                 .permit(:name,  :expiration_date, :description,
                         :discount_rate, :code, :coupon_quantity)
         end
+
+
 end
