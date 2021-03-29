@@ -92,7 +92,7 @@ class PromotionsTest < ApplicationSystemTestCase       #Arrange / Act / Assert
     fill_in 'Data de término', with: '22/12/2033'
     click_on 'Criar promoção'
 
-    assert_current_path promotion_path(Promotion.last)
+    # assert_current_path promotion_path(Promotion.last)
     assert_text 'Cyber Monday'
     assert_text 'Promoção de Cyber Monday'
     assert_text '15,00%'
@@ -172,20 +172,25 @@ class PromotionsTest < ApplicationSystemTestCase       #Arrange / Act / Assert
     assert_text 'não pode ficar em branco', count: 5
   end
 
-  # test 'update and code/name must be unique' do
-  #   promotion = Promotion.create!(name: 'Namorados', description: 'Promoção dia dos Namorados',
-  #                                 code: 'NAMORADOS10', discount_rate: 10, 
-  #                                 coupon_quantity: 60,
-  #                                 expiration_date: '12/06/2032')
-    
-  #   login_user
-  #   visit promotion_path(promotion)
-  #   click_on 'Editar promoção'
-  #   fill_in 'Nome', with: 'Namorados'
-  #   fill_in 'Código', with: 'NAMORADOS10'
+  test 'update and code/name must be unique' do
+    promotion = Promotion.create!(name: 'Namorados', description: 'Promoção dia dos Namorados',
+                                  code: 'NAMORADOS10', discount_rate: 10, 
+                                  coupon_quantity: 60,
+                                  expiration_date: '12/06/2032')
+    Promotion.create!(name: 'Cyber Monday', coupon_quantity: 100,
+                      description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15', discount_rate: 15,
+                      expiration_date: '22/12/2033')
 
-  #   assert_text 'já está em uso', count: 2
-  # end
+    login_user
+    visit promotion_path(promotion)
+    click_on 'Editar'
+    fill_in 'Nome', with: 'Cyber Monday'
+    fill_in 'Código', with: 'CYBER15'
+    click_on 'Editar promoção'
+
+    assert_text 'já está em uso', count: 2
+  end
 
   test 'remove promotion' do
     promotion = Promotion.create!(name: 'Namorados', description: 'Promoção dia dos Namorados',
@@ -195,16 +200,28 @@ class PromotionsTest < ApplicationSystemTestCase       #Arrange / Act / Assert
 
     login_user
     visit promotion_path(promotion)
-
-    click_on 'Apagar'
-    click_on promotion.name
-    assert_difference 'Promotion.count', -1 do
+    assert_difference 'Promotion.count', -1 do      
       accept_confirm { click_on 'Apagar' }
       assert_text 'Promoção apagada com sucesso'
     end
     assert_text 'Nenhuma promoção cadastrada'
     assert_no_text 'Namorados'
     assert_no_text 'Promoção dia dos Namorados'
+  end
+
+  test 'cannot remove promotion with coupons' do
+    promotion = Promotion.create!(name: 'Namorados', description: 'Promoção dia dos Namorados',
+                                  code: 'NAMORADOS10', discount_rate: 10, 
+                                  coupon_quantity: 2,
+                                  expiration_date: '13/06/2021')
+    promotion.generate_coupons!
+
+    login_user
+    visit promotion_path(promotion)
+    accept_confirm { click_on 'Apagar' }
+
+    assert_text 'Promoção não pode ser apagada'
+    assert_text 'Namorados'
   end
 
   test 'generate coupons for a promotion' do
@@ -283,5 +300,4 @@ class PromotionsTest < ApplicationSystemTestCase       #Arrange / Act / Assert
     visit new_promotion_path
     assert_current_path new_user_session_path
   end
-
 end
