@@ -31,21 +31,27 @@ class PromotionsController < ApplicationController
     end
 
     def update
-        if @promotion.update(promotion_params)
-            redirect_to @promotion
-        else
-            render :edit
-        end
+        return redirect_to @promotion if @promotion.update(promotion_params)
+
+        render :edit
     end
 
     def destroy
-        @coupons = Coupon.where(promotion: @promotion.id)
-        @coupons.each do |coupon|
-            coupon.destroy
-        end
+        # @coupons = Coupon.where(promotion: @promotion.id)
+        # @coupons.each do |coupon|
+        #     coupon.destroy
+        # end
 
-        @promotion.destroy
-        redirect_to @promotion
+        if @promotion.destroy
+            redirect_to promotions_path, notice: t('.success')
+        else
+            redirect_to @promotion, notice: t('.failed')
+        end
+    end
+
+    def search
+        @promotions = Promotion.search(params[:q])
+        render :index
     end
 
 
@@ -61,6 +67,4 @@ class PromotionsController < ApplicationController
                 .permit(:name,  :expiration_date, :description,
                         :discount_rate, :code, :coupon_quantity)
         end
-
-
 end

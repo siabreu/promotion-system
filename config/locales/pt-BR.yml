@@ -1,3 +1,5 @@
 pt-BR:
   buttons:
     back: Voltar
+    edit: Editar
+    destroy: Apagar

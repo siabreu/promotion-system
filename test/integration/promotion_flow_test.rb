@@ -23,16 +23,15 @@ class  PromotionFlowTest < ActionDispatch::IntegrationTest
 
         assert_redirected_to new_user_session_path
     end
-    
+
     test 'cannot generate coupons without login' do
         promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                       code: 'NATAL10', discount_rate: 15, coupon_quantity: 5,
                                       expiration_date: '22/12/2033')
 
         post generate_coupons_promotion_path(promotion)
-        
+
         assert_redirected_to new_user_session_path
     end
-
 
 end

@@ -1,5 +1,5 @@
 class Promotion < ApplicationRecord
-    has_many :coupons , dependent: :destroy
+    has_many :coupons , dependent: :restrict_with_error
 
     validates :name, :code, :discount_rate, :coupon_quantity, 
               :expiration_date, presence: true
@@ -13,9 +13,15 @@ class Promotion < ApplicationRecord
         end
     end
 
-    # rails notes --para visualizar os TODOS
     #TODO: fazer testes para esse método
     def coupons? 
         coupons.any?
+    end
+
+    def self.search(query)
+        where('name LIKE ?', "%#{query.downcase}%")
+        # TODO: Trocar para busca Kaminari - faz paginação
+        # pode limitar o total de retorno para 5
+        # where('name LIKE ?', "%#{query}%").limit(5)
     end
 end

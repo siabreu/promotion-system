@@ -9,7 +9,6 @@ pt-BR:
       coupon/status:
         active: Ativo
         disabled: Desabilitado
-        
   coupons:
     disable:
       success: Cupom %{code} desabilitado com sucesso

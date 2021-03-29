@@ -1,4 +1,7 @@
 <%= link_to t('buttons.back'), promotions_path %>
+<%= link_to t('buttons.edit'), edit_promotion_path(@promotion) %>
+<%= link_to t('buttons.destroy'), promotion_path(@promotion), method: :delete, data: { confirm: t('.destroy_confirm') } %>
+
 
 <h3><%= @promotion.name %></h3>
     <dl>
@@ -26,7 +29,3 @@
             <% end %>
         </div>
     <% end %>
-
-<%= link_to 'Editar promoção', edit_promotion_path(@promotion) %>
-<%= link_to 'Excluir promoção', promotion_path(@promotion), method: :delete, confirm: 'Tem certeza?' %>
-

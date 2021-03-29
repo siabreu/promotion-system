@@ -1,3 +1,9 @@
 ---
 pt-BR:
-  
+  activerecord:
+    models:
+      user: Usuário
+    attributes:
+      email: Email
+      password:
+      password_confirmatoin: Confirmação de senha
