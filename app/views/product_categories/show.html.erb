@@ -1,13 +1,12 @@
-<%= link_to 'Voltar', product_categories_path %>
+<%= link_to t('buttons.back'), product_categories_path %>
+<%= link_to t('buttons.edit'), edit_product_category_path(@product_category) %>
+<%= link_to t('buttons.destroy'), product_category_path(@product_category), 
+                                            method: :delete, data: { confirm: t('.destroy_confirm') } %>
 
 <h3>Lista de categorias de produtos</h3>
 <ul>
-    <li>Código - <%= @product_category.code %> 
+    <li><%= ProductCategory.human_attribute_name(:name)%> - 
+        <%= @product_category.code %> 
         : <%= @product_category.name %>
     </li>
 </ul>
-
-<%= link_to 'Editar categoria de produto', edit_product_category_path(@product_category) %>
-<%= link_to 'Excluir categoria de produto', product_category_path(@product_category), 
-                                            method: :delete %>
-

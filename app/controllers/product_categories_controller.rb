@@ -1,10 +1,12 @@
 class ProductCategoriesController < ApplicationController
+    before_action :authenticate_user!
+    before_action :set_product_category, only: %i[show edit update destroy]
+
     def index
         @product_categories = ProductCategory.all
     end
 
     def show
-        @product_category = ProductCategory.find(params[:id])
     end
 
     def new
@@ -21,28 +23,27 @@ class ProductCategoriesController < ApplicationController
     end
 
     def edit
-        @product_category = ProductCategory.find(params[:id])
     end
 
     def update
-        @product_category = ProductCategory.find(params[:id])
+        return redirect_to @product_category if @product_category.update(product_params)
 
-        if @product_category.update(product_params)
-            redirect_to @product_category
-        else
-            render :edit
-        end
+        render :edit
     end
 
     def destroy
-        @product_category = ProductCategory.find(params[:id])
-
-        @product_category.destroy
-        
-        redirect_to @product_category
+        if @product_category.destroy
+            redirect_to product_categories_path, notice: t('.success')
+        else
+            redirect_to @product_category, notice: t('.failed')
+        end
     end
 
     private
+
+        def set_product_category
+            @product_category = ProductCategory.find(params[:id])
+        end
 
         def product_params
             params

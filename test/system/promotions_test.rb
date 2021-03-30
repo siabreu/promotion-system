@@ -200,7 +200,7 @@ class PromotionsTest < ApplicationSystemTestCase       #Arrange / Act / Assert
 
     login_user
     visit promotion_path(promotion)
-    assert_difference 'Promotion.count', -1 do      
+    assert_difference 'Promotion.count', -1 do
       accept_confirm { click_on 'Apagar' }
       assert_text 'Promoção apagada com sucesso'
     end

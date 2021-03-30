@@ -1,0 +1,17 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      product_category:
+        one: Categoria de Produto
+        other: Categorias de Produtos
+    attributes:
+      product_category:
+        name: Nome
+        code: Código
+  product_categories:
+    show:
+      destroy_confirm: Tem certeza que deseja apagar essa categoria?
+    destroy:
+      success: Categoria apagada com sucesso
+      failed: Categoria não pode ser apagada

@@ -2,13 +2,12 @@ require 'application_system_test_case'
 
 class ProductCategoriesTest < ApplicationSystemTestCase
     test 'view product categories' do
-        #Arrange
         ProductCategory.create!(name: 'Produto AntiFraude',
                                 code: 'ANTIFRA')
         ProductCategory.create!(name: 'Produto Trial',
                                 code: 'TRIAL')
-        
-        #Act
+
+        login_user
         visit root_path
         click_on 'Categorias de produtos'
 
@@ -18,9 +17,10 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     end
 
     test 'no product category are available' do
+        login_user
         visit root_path
         click_on 'Categorias de produtos'
-    
+
         assert_text 'Nenhuma categoria de produto cadastrada'
     end
 
@@ -28,6 +28,7 @@ class ProductCategoriesTest < ApplicationSystemTestCase
         ProductCategory.create!(name: 'Produto AntiFraude',
                                 code: 'ANTIFRA')
 
+        login_user
         visit root_path
         click_on 'Categorias de produtos'
         click_on 'Voltar'
@@ -37,12 +38,13 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
 
     test 'create product category' do
+        login_user
         visit root_path
         click_on 'Categorias de produtos'
         click_on 'Registrar uma categoria de produto'
         fill_in 'Nome', with: 'Produto AntiFraude'
         fill_in 'Código', with: 'ANTIFRA'        
-        click_on 'Criar categoria'
+        click_on 'Criar Categoria de Produto'
 
         assert_current_path product_category_path(ProductCategory.last)
         assert_text 'Produto AntiFraude'
@@ -51,10 +53,11 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     end
 
     test 'create and attibutes cannot be blank' do
+        login_user
         visit root_path
         click_on 'Categorias de produtos'
         click_on 'Registrar uma categoria de produto'
-        click_on 'Criar categoria de produto'
+        click_on 'Criar Categoria de Produto'
 
         assert_text 'não pode ficar em branco', count: 2
     end
@@ -62,26 +65,28 @@ class ProductCategoriesTest < ApplicationSystemTestCase
     test 'create code must be unique' do
         ProductCategory.create!(name: 'Produto AntiFraude',
                                 code: 'ANTIFRA')
-        
+
+        login_user
         visit root_path
         click_on 'Categorias de produtos'
         click_on 'Registrar uma categoria de produto'
         fill_in 'Nome', with: 'Produto AntiFraude'
         fill_in 'Código', with: 'ANTIFRA'
-        click_on 'Criar categoria de produto'
+        click_on 'Criar Categoria de Produto'
 
-        assert_text 'deve ser único', count: 1
+        assert_text 'já está em uso', count: 1
     end
 
     test 'update product category' do
         product_category = ProductCategory.create!(name: 'Produto AntiVirus',
             code: 'ANTIVIRUS')
 
+        login_user
         visit product_category_path(product_category)
-        click_on 'Editar categoria de produto'
+        click_on 'Editar'
         fill_in 'Nome', with: 'Produto AntiVirus'
         fill_in 'Código', with: 'ANTIVIRUS'
-        click_on 'Editar categoria de produto'
+        click_on 'Atualizar Categoria de Produto'
 
         assert_current_path product_category_path(ProductCategory.last)
         assert_text 'Produto AntiVirus'
@@ -90,15 +95,15 @@ class ProductCategoriesTest < ApplicationSystemTestCase
 
     test 'remove product category' do
         product_category = ProductCategory.create!(name: 'Produto AntiVirus',
-            code: 'ANTIVIRUS')
+                                                   code: 'ANTIVIRUS')
 
+        login_user
         visit product_category_path(product_category)
-        click_on 'Excluir categoria de produto'
-
-        # accept_confirm do
-        #   click_on 'Ok'
-        # end
-
-        assert_current_path product_categories_path
+        assert_difference 'ProductCategory.count', -1 do
+            accept_confirm { click_on 'Apagar' }
+            assert_text 'Categoria apagada com sucesso'
+        end
+        assert_text 'Nenhuma categoria de produto cadastrada'
+        assert_no_text 'Produto AntiVirus'
     end
 end
