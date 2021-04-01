@@ -232,6 +232,9 @@ class PromotionsTest < ApplicationSystemTestCase       #Arrange / Act / Assert
                                   coupon_quantity: 100,
                                   expiration_date: '22/12/2033', user: user)
 
+    promotion.create_promotion_approval(user: User.create!(email: 'john.doe@iugu.com.br', password: '1234567'))
+    
+
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
 
@@ -270,7 +273,7 @@ class PromotionsTest < ApplicationSystemTestCase       #Arrange / Act / Assert
     refute_text cyber_monday.name
   end
 
-  test 'user approve promotion' do
+  test 'user approves promotion' do
     user = User.create!(email: 'john.doe@iugu.com.br', password: '123456')
     christmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
@@ -285,6 +288,19 @@ class PromotionsTest < ApplicationSystemTestCase       #Arrange / Act / Assert
     assert_link 'Gerar cupons'
     refute_link 'Aprovar'
   end
+
+  test 'user can not approves his promotions' do
+    user = login_user
+    christmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033', user: user)
+
+    visit promotion_path(christmas)
+
+    refute_link 'Aprovar'
+    refute_link 'Gerar cupons'
+  end
+
 
   # TODO: não encontra nada
   # TODO: visit search_promotions(q: 'natal')

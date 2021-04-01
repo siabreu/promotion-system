@@ -2,7 +2,7 @@ require 'application_system_test_case'
 
 class CouponsTest < ApplicationSystemTestCase
     test 'disable a coupon' do
-        user = User.create!(email: 'jane.doe@iugu.com.br', password: '123456')
+        user = login_user
         promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                       code: 'NATAL10', discount_rate: 10, 
                                       coupon_quantity: 3,
@@ -10,7 +10,6 @@ class CouponsTest < ApplicationSystemTestCase
         # coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
         promotion.generate_coupons!
 
-        login_user
         visit promotion_path(promotion)
         within 'div#coupon-natal10-0001' do
             click_on 'Desabilitar'
