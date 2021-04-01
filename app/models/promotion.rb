@@ -1,5 +1,7 @@
 class Promotion < ApplicationRecord
+    belongs_to :user
     has_many :coupons , dependent: :restrict_with_error
+    has_one :promotion_approval
 
     validates :name, :code, :discount_rate, :coupon_quantity, 
               :expiration_date, presence: true
@@ -23,5 +25,9 @@ class Promotion < ApplicationRecord
         # TODO: Trocar para busca Kaminari - faz paginação
         # pode limitar o total de retorno para 5
         # where('name LIKE ?', "%#{query}%").limit(5)
+    end
+
+    def approved?
+        promotion_approval.present?
     end
 end

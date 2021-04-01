@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :promotions do
-    post 'generate_coupons', on: :member
+    member do 
+      post 'generate_coupons'
+      post 'approve'
+    end
     get 'search', on: :collection
   end
 
@@ -13,5 +16,6 @@ Rails.application.routes.draw do
   resources :coupons, only: [] do
     post 'disable', on: :member
   end
+
 
 end

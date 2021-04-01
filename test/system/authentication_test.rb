@@ -2,7 +2,6 @@ require 'application_system_test_case'
 
 class AuthenticationTest < ApplicationSystemTestCase
     test 'user sign up' do
-
         visit root_path
         click_on 'Cadastrar'
 
@@ -39,7 +38,13 @@ class AuthenticationTest < ApplicationSystemTestCase
         assert_no_link 'Entrar'
     end
 
-    # TODO: Teste de sair (sign out)
+    # test 'user sign out' do
+    #     user = login_user
+    #     sign_out user
+
+    #     assert_no_link 'Sair'
+    # end
+
     # TODO: Teste de falhar ao registrar
     # TODO: Teste de falhar ao logar
     # TODO: Teste o recuperar senha
