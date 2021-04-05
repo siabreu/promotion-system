@@ -15,7 +15,13 @@ Rails.application.routes.draw do
 
   resources :coupons, only: [] do
     post 'disable', on: :member
+    get 'search', on: :collection
   end
 
+  namespace :api, constrainsts: lambda{ |req| req.format == :json } do
+    namespace :v1 do
+      resources :coupons, only: [:show], param: :code
+    end
+  end
 
 end

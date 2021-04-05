@@ -25,4 +25,21 @@ class CouponsTest < ApplicationSystemTestCase
         # assert_text "#{coupon.code} (Desabilitado)"
         # assert_no_link 'Desabilitar'
     end
+
+    test 'search coupon by code and find result' do
+        user = login_user
+        cyber_monday = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                                        description: 'Promoção de Cyber Monday',
+                                        code: 'CYBER15', discount_rate: 15,
+                                        expiration_date: '22/12/2033', user: user)
+
+        result = Coupon.search('CYBER15-0002')
+
+        visit root_path
+        click_on 'Cupons'
+        fill_in 'Busca', with: 'CYBER15-0002'
+        click_on 'Buscar'
+
+        assert_text result.promotion.name
+      end
 end

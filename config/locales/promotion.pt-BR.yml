@@ -22,3 +22,6 @@ pt-BR:
     destroy:
        success: Promoção apagada com sucesso
        failed: Promoção não pode ser apagada
+    approve:
+      approved: Promoção aprovada com sucesso
+      disallowed: Ação não permitida

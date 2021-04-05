@@ -1,0 +1,31 @@
+<%= link_to t('buttons.back'), root_path %>
+
+<%= form_with url: search_coupons_path, method: :get do |f| %>
+    <%= f.label :q, 'Buscar' %>
+    <%= f.text_field :q %>
+    <%= f.submit 'Buscar' %>
+<% end %>
+
+<% if @coupon.nil? %>
+   <h3>Cupom não encontrado</h3>
+<% else %>
+    <dl>
+        <dt>Cupom<%= @coupon.code %> </dt>
+        <dd><%= @coupon.status %></dd>
+    </dl>
+    <br>
+    <dl>
+        <dt>Nome</dt>
+        <dd><%= @coupon.promotion.name %></dd>
+        <dt>Descrição</dt>
+        <dd><%= @coupon.promotion.description %></dd>
+        <dt>Desconto</dt>
+        <dd><%= number_to_percentage @coupon.promotion.discount_rate, precision: 2 %></dd>
+        <dt>Código</dt>
+        <dd><%= @coupon.promotion.code %></dd>
+        <dt>Data de término</dt>
+        <dd><%= @coupon.promotion.expiration_date %></dd>
+        <dt>Quantidade de cupons</dt>
+        <dd><%= @coupon.promotion.coupon_quantity %></dd>
+    </dl>
+<% end %>

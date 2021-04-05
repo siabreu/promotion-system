@@ -58,7 +58,7 @@ class PromotionsController < ApplicationController
 
     def approve
         current_user.promotion_approvals.create!(promotion: @promotion)
-        redirect_to @promotion, notice: 'Promoção aprovada com sucesso'
+        redirect_to @promotion, notice: t('.approved')
     end
 
     private
@@ -77,6 +77,6 @@ class PromotionsController < ApplicationController
         # autorização
         def can_be_approved
             redirect_to @promotion, 
-            alert: 'Ação não permitida' unless @promotion.can_approve?(current_user)
+            alert: t('.disallowed') unless @promotion.can_approve?(current_user)
         end
 end

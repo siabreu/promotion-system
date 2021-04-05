@@ -7,6 +7,7 @@ class Promotion < ApplicationRecord
     validates :name, :code, :discount_rate, :coupon_quantity, 
               :expiration_date, presence: true
     validates :code, :name, uniqueness: true
+    SERARCHABLE_FIELDS = %w[name code description].freeze
 
     def generate_coupons!
         return if coupons?
@@ -21,11 +22,17 @@ class Promotion < ApplicationRecord
         coupons.any?
     end
 
+    # TODO: Trocar para busca Kaminari - faz paginação
     def self.search(query)
-        where('name LIKE ?', "%#{query.downcase}%")
-        # TODO: Trocar para busca Kaminari - faz paginação
+        # where('name LIKE ?', "%#{query.downcase}%")
         # pode limitar o total de retorno para 5
         # where('name LIKE ?', "%#{query}%").limit(5)
+        where(
+            SERARCHABLE_FIELDS
+                .map { |field| "#{field} LIKE :query"}
+                .join(' OR '),
+            query: "%#{query}%"
+         ).limit(5)
     end
 
     def approved?

@@ -4,4 +4,8 @@ class CouponsController < ApplicationController
         @coupon.disabled!
         redirect_to @coupon.promotion, notice: t('.success', code: @coupon.code)
     end
+
+    def search
+        @coupon = Coupon.search(params[:q])
+    end
 end

@@ -38,7 +38,6 @@ ActiveRecord::Schema.define(version: 2021_04_01_133709) do
     t.index ["promotion_id"], name: "index_promotion_approvals_on_promotion_id"
     t.index ["user_id"], name: "index_promotion_approvals_on_user_id"
   end
-
   create_table "promotions", force: :cascade do |t|
     t.string "name"
     t.text "description"
