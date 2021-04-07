@@ -32,14 +32,15 @@ class CouponsTest < ApplicationSystemTestCase
                                         description: 'Promoção de Cyber Monday',
                                         code: 'CYBER15', discount_rate: 15,
                                         expiration_date: '22/12/2033', user: user)
+        coupon = Coupon.create!(code: 'CYBER15-0002', promotion: cyber_monday)
+        result = Coupon.search(coupon.code)
 
-        result = Coupon.search('CYBER15-0002')
 
         visit root_path
         click_on 'Cupons'
         fill_in 'Busca', with: 'CYBER15-0002'
         click_on 'Buscar'
 
-        assert_text result.promotion.name
+        assert_text coupon.promotion.name
       end
 end

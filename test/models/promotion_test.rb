@@ -16,11 +16,14 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'code must be uniq' do
-    user = User.create!(email: 'jane.doe@iugu.com.br', password: '123456')
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: user)
-    promotion = Promotion.new(code: 'NATAL10')
+    other_promotion = Fabricate(:promotion)
+    promotion = Promotion.new(code: other_promotion.code)
+
+    # user = User.create!(email: 'jane.doe@iugu.com.br', password: '123456')
+    # Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+    #                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+    #                   expiration_date: '22/12/2033', user: user)
+    # promotion = Promotion.new(code: 'NATAL10')
 
     refute promotion.valid?
     assert_includes promotion.errors[:code], 'já está em uso'

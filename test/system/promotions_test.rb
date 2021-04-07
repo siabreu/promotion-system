@@ -281,7 +281,11 @@ class PromotionsTest < ApplicationSystemTestCase       #Arrange / Act / Assert
 
     approver = login_user
     visit promotion_path(christmas)
-    accept_confirm { click_on 'Aprovar' }
+
+    assert_emails 1 do
+      accept_confirm { click_on 'Aprovar' }
+      assert_text 'Promoção aprovada com sucesso'
+    end
 
     assert_text 'Promoção aprovada com sucesso'
     assert_text "Aprovada por: #{approver.email}"
